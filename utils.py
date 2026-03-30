@@ -1,7 +1,3 @@
-"""
-Helper functions for training, evaluation, and model management.
-"""
-
 import torch
 import numpy as np
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support, confusion_matrix
@@ -10,16 +6,6 @@ import json
 
 
 def calculate_metrics(predictions, labels):
-    """
-    Calculate accuracy, precision, recall, and F1-score.
-    
-    Args:
-        predictions: Predicted labels (numpy array or tensor)
-        labels: True labels (numpy array or tensor)
-        
-    Returns:
-        Dictionary with metrics
-    """
     if torch.is_tensor(predictions):
         predictions = predictions.cpu().numpy()
     if torch.is_tensor(labels):
@@ -39,16 +25,6 @@ def calculate_metrics(predictions, labels):
 
 
 def get_confusion_matrix(predictions, labels):
-    """
-    Calculate confusion matrix.
-    
-    Args:
-        predictions: Predicted labels
-        labels: True labels
-        
-    Returns:
-        Confusion matrix
-    """
     if torch.is_tensor(predictions):
         predictions = predictions.cpu().numpy()
     if torch.is_tensor(labels):
@@ -58,15 +34,6 @@ def get_confusion_matrix(predictions, labels):
 
 
 def save_model(model, vocab, save_dir='saved_models', model_name='best_model.pt'):
-    """
-    Save model and vocabulary.
-    
-    Args:
-        model: PyTorch model
-        vocab: Vocabulary object
-        save_dir: Directory to save model
-        model_name: Name of model file
-    """
     os.makedirs(save_dir, exist_ok=True)
     
     # Save model state
@@ -94,18 +61,6 @@ def save_model(model, vocab, save_dir='saved_models', model_name='best_model.pt'
 
 
 def load_model(model_class, save_dir='saved_models', model_name='best_model.pt', device='cpu'):
-    """
-    Load model and vocabulary.
-    
-    Args:
-        model_class: Model class to instantiate
-        save_dir: Directory containing saved model
-        model_name: Name of model file
-        device: Device to load model on
-        
-    Returns:
-        model, vocab
-    """
     from data import Vocabulary
     
     # Load model checkpoint
@@ -139,15 +94,7 @@ def load_model(model_class, save_dir='saved_models', model_name='best_model.pt',
 
 
 class EarlyStopping:
-    """Early stopping to stop training when validation loss doesn't improve."""
-    
     def __init__(self, patience=3, min_delta=0.0, mode='min'):
-        """
-        Args:
-            patience: Number of epochs to wait before stopping
-            min_delta: Minimum change to qualify as improvement
-            mode: 'min' for loss, 'max' for accuracy/f1
-        """
         self.patience = patience
         self.min_delta = min_delta
         self.mode = mode
@@ -156,15 +103,6 @@ class EarlyStopping:
         self.early_stop = False
         
     def __call__(self, score):
-        """
-        Check if training should stop.
-        
-        Args:
-            score: Current validation score (loss or metric)
-            
-        Returns:
-            True if training should stop, False otherwise
-        """
         if self.best_score is None:
             self.best_score = score
             return False
@@ -187,13 +125,6 @@ class EarlyStopping:
 
 
 def print_metrics(metrics, prefix=""):
-    """
-    Print metrics in a formatted way.
-    
-    Args:
-        metrics: Dictionary of metrics
-        prefix: Prefix for printing (e.g., "Train", "Val")
-    """
     print(f"{prefix} Metrics:")
     print(f"  Accuracy:  {metrics['accuracy']:.4f}")
     print(f"  Precision: {metrics['precision']:.4f}")
@@ -202,12 +133,6 @@ def print_metrics(metrics, prefix=""):
 
 
 def print_confusion_matrix(cm):
-    """
-    Print confusion matrix in a formatted way.
-    
-    Args:
-        cm: Confusion matrix (2x2 for binary classification)
-    """
     print("\nConfusion Matrix:")
     print(f"                Predicted")
     print(f"              Neg    Pos")

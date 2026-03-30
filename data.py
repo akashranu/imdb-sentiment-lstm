@@ -1,7 +1,3 @@
-"""
-Data loading and preprocessing for IMDB sentiment analysis.
-"""
-
 import re
 import torch
 from torch.utils.data import Dataset, DataLoader
@@ -9,9 +5,8 @@ from collections import Counter
 from datasets import load_dataset
 import numpy as np
 
-
+# This vocabulary class if for mapping words to indicies
 class Vocabulary:
-    """Vocabulary class for mapping words to indices."""
     
     def __init__(self, max_vocab_size=25000):
         self.max_vocab_size = max_vocab_size
@@ -20,7 +15,6 @@ class Vocabulary:
         self.word_counts = Counter()
         
     def build_vocabulary(self, texts):
-        """Build vocabulary from a list of texts."""
         # Count word frequencies
         for text in texts:
             tokens = self._tokenize(text)
@@ -37,7 +31,6 @@ class Vocabulary:
         print(f"Vocabulary built with {len(self.word2idx)} tokens")
         
     def _tokenize(self, text):
-        """Tokenize text into words."""
         # Lowercase and remove special characters
         text = text.lower()
         text = re.sub(r'[^a-zA-Z0-9\s]', '', text)
@@ -45,12 +38,10 @@ class Vocabulary:
         return tokens
     
     def encode(self, text):
-        """Convert text to list of indices."""
         tokens = self._tokenize(text)
         return [self.word2idx.get(token, self.word2idx["<UNK>"]) for token in tokens]
     
     def decode(self, indices):
-        """Convert list of indices back to text."""
         return ' '.join([self.idx2word.get(idx, "<UNK>") for idx in indices])
     
     def __len__(self):
@@ -58,7 +49,6 @@ class Vocabulary:
 
 
 class IMDBDataset(Dataset):
-    """PyTorch Dataset for IMDB reviews."""
     
     def __init__(self, texts, labels, vocab, max_length=256):
         self.texts = texts
@@ -86,19 +76,6 @@ class IMDBDataset(Dataset):
 
 
 def load_imdb_data(train_split=0.7, val_split=0.15, max_vocab_size=25000, max_length=256, batch_size=32):
-    """
-    Load and preprocess IMDB dataset.
-    
-    Args:
-        train_split: Proportion of data for training
-        val_split: Proportion of data for validation
-        max_vocab_size: Maximum vocabulary size
-        max_length: Maximum sequence length
-        batch_size: Batch size for DataLoader
-        
-    Returns:
-        train_loader, val_loader, test_loader, vocab
-    """
     print("Loading IMDB dataset...")
     dataset = load_dataset("imdb")
     

@@ -1,6 +1,3 @@
-"""
-Inference script for testing the trained sentiment classifier on custom input.
-"""
 
 import torch
 import argparse
@@ -9,17 +6,6 @@ from utils import load_model
 
 
 def preprocess_text(text, vocab, max_length=256):
-    """
-    Preprocess custom text for inference.
-    
-    Args:
-        text: Input text string
-        vocab: Vocabulary object
-        max_length: Maximum sequence length
-        
-    Returns:
-        Preprocessed tensor
-    """
     # Encode text
     encoded = vocab.encode(text)
     
@@ -36,18 +22,6 @@ def preprocess_text(text, vocab, max_length=256):
 
 
 def predict_sentiment(text, model, vocab, device):
-    """
-    Predict sentiment for a given text.
-    
-    Args:
-        text: Input text string
-        model: Trained model
-        vocab: Vocabulary object
-        device: Device to run inference on
-        
-    Returns:
-        Predicted label (Positive/Negative) and probability
-    """
     # Preprocess text
     input_tensor = preprocess_text(text, vocab).to(device)
     
@@ -62,14 +36,6 @@ def predict_sentiment(text, model, vocab, device):
 
 
 def interactive_mode(model, vocab, device):
-    """
-    Interactive mode for testing multiple reviews.
-    
-    Args:
-        model: Trained model
-        vocab: Vocabulary object
-        device: Device to run inference on
-    """
     print("\n" + "="*60)
     print("IMDB Sentiment Analysis - Interactive Mode")
     print("="*60)
@@ -115,15 +81,6 @@ def interactive_mode(model, vocab, device):
 
 
 def batch_mode(texts, model, vocab, device):
-    """
-    Batch mode for testing multiple reviews at once.
-    
-    Args:
-        texts: List of text strings
-        model: Trained model
-        vocab: Vocabulary object
-        device: Device to run inference on
-    """
     print("\n" + "="*60)
     print("IMDB Sentiment Analysis - Batch Mode")
     print("="*60)
@@ -140,7 +97,6 @@ def batch_mode(texts, model, vocab, device):
 
 
 def main():
-    """Main inference function."""
     parser = argparse.ArgumentParser(description='Test sentiment classifier on custom input')
     parser.add_argument('--text', type=str, help='Single text to analyze')
     parser.add_argument('--file', type=str, help='File containing reviews (one per line)')

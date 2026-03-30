@@ -1,7 +1,3 @@
-"""
-Training and evaluation script for LSTM sentiment classifier.
-"""
-
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -36,19 +32,6 @@ PATIENCE = 3
 
 
 def train_epoch(model, train_loader, criterion, optimizer, device):
-    """
-    Train for one epoch.
-    
-    Args:
-        model: PyTorch model
-        train_loader: Training data loader
-        criterion: Loss function
-        optimizer: Optimizer
-        device: Device to train on
-        
-    Returns:
-        Average loss, predictions, labels
-    """
     model.train()
     total_loss = 0
     all_predictions = []
@@ -81,18 +64,6 @@ def train_epoch(model, train_loader, criterion, optimizer, device):
 
 
 def evaluate(model, data_loader, criterion, device):
-    """
-    Evaluate model on validation or test set.
-    
-    Args:
-        model: PyTorch model
-        data_loader: Data loader
-        criterion: Loss function
-        device: Device to evaluate on
-        
-    Returns:
-        Average loss, predictions, labels
-    """
     model.eval()
     total_loss = 0
     all_predictions = []
@@ -117,19 +88,6 @@ def evaluate(model, data_loader, criterion, device):
 
 
 def train_model(train_loader, val_loader, vocab, device, num_epochs=NUM_EPOCHS):
-    """
-    Train the sentiment classifier.
-    
-    Args:
-        train_loader: Training data loader
-        val_loader: Validation data loader
-        vocab: Vocabulary object
-        device: Device to train on
-        num_epochs: Number of epochs to train
-        
-    Returns:
-        Trained model
-    """
     # Initialize model
     model = LSTMSentimentClassifier(
         vocab_size=len(vocab),
@@ -198,13 +156,6 @@ def train_model(train_loader, val_loader, vocab, device, num_epochs=NUM_EPOCHS):
 
 
 def test_model(test_loader, device):
-    """
-    Test the trained model.
-    
-    Args:
-        test_loader: Test data loader
-        device: Device to test on
-    """
     print(f"\n{'='*60}")
     print("Testing Model")
     print(f"{'='*60}\n")
@@ -258,7 +209,6 @@ def test_model(test_loader, device):
 
 
 def main():
-    """Main training function."""
     parser = argparse.ArgumentParser(description='Train LSTM sentiment classifier')
     parser.add_argument('--evaluate', action='store_true', help='Only evaluate the model')
     parser.add_argument('--epochs', type=int, default=NUM_EPOCHS, help='Number of epochs')
